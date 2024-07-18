@@ -1,27 +1,49 @@
-import { Helmet } from 'react-helmet-async';
-const Home = () => {
-    return (
-        <div>
-            <Helmet>
-                <title>Home</title>
-            </Helmet>
+import { useState } from "react";
 
-            <h2>Home Page</h2>
-            <div className="card w-96 bg-base-100 shadow-xl">
-  <figure className="px-10 pt-10">
-    <img src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" className="rounded-xl" />
-  </figure>
-  <div className="card-body items-center text-center">
-    <h2 className="card-title">Shoes!</h2>
-    <p>If a dog chews shoes whose shoes does he choose?</p>
-    <div className="card-actions">
-      <button className="btn btn-primary">Buy Now</button>
+
+
+const Home = () => {
+ 
+  const initialState = Array(9).fill('bg-white')
+  const [colors, setColors] = useState(initialState)
+  const [order, setOrder] = useState([])
+
+  const handleClick = (idx)=>{
+    const newColors = [...colors];
+    newColors[idx]='bg-green-500';
+    setColors([...newColors]);
+    setOrder([...order, idx])
+
+    if(idx===8){
+      changeToOrange();
+    }
+  }
+
+  const changeToOrange=()=>{
+    const newColors = [...colors]
+    order.forEach((idx, i)=>{
+      setTimeout(()=>{
+        newColors[idx]= 'bg-orange-500'
+        setColors([...newColors])
+      }, i*200)
+    })
+  }
+
+  return (
+    <div  className="flex justify-center">
+      <div className="grid grid-cols-3 gap-2">
+          {colors.map((color, idx)=>(
+            <div
+            key={idx}
+            className={`w-24 h-24 ${color} border border-black cursor-pointer`}
+            onClick={()=>handleClick(idx)}>
+
+            </div>
+          ))}
+      </div>
     </div>
-  </div>
-</div>
-        </div>
-        
-    );
+
+  );
 };
 
 export default Home;
